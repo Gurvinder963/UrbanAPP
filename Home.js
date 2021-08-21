@@ -5,9 +5,11 @@
  * @format
  * @flow strict-local
  */
-
+ import { createFoodItem } from '../UrbanApp/State/CreateFoodItemAPI/Actions';
+ import { connect } from 'react-redux'
 import React from 'react';
 import type { Node } from 'react';
+
 import Carousel from 'react-native-snap-carousel';
 import {
   SafeAreaView,
@@ -27,7 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -48,6 +50,9 @@ export default class HomeScreen extends React.Component {
      
     ]
   }
+}
+componentDidMount() {
+  console.log("on press saloon")
 }
   _renderItem({item,index}){
     var value=item.title;
@@ -72,7 +77,13 @@ export default class HomeScreen extends React.Component {
 }
 onPress = () => {
   const { navigate } = this.props.navigation;
-  navigate('SalonList')
+ // navigate('SalonList')
+ console.log("on press saloon")
+ var payload = {
+ 
+  dateCreated: "none",
+}
+ this.props.createFoodItem(payload)
 };
 onPressService = () => {
   const { navigate } = this.props.navigation;
@@ -587,6 +598,9 @@ onPressService = () => {
   );
 };
 }
+
+
+
 const styles = StyleSheet.create({
   searchSection: {
     flex: 1,
@@ -628,3 +642,21 @@ const styles = StyleSheet.create({
 });
 
 
+const mapStateToProps = state => ({
+ 
+  createFoodDataResponse: state.createFoodData,
+
+ 
+ 
+})
+
+const mapDispatchToProps = dispatch => ({
+
+  createFoodItem: (...args) => {
+    console.log("create food dispatch method")
+    dispatch(createFoodItem(...args))
+  },
+
+})
+export default connect(mapStateToProps,mapDispatchToProps,
+)(HomeScreen)
